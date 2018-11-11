@@ -15,6 +15,16 @@ export default class Login extends Component {
     username: ''
   }
 
+  handleLogin = async () => {
+    const { username } = this.state
+
+    if(!username.length) return
+
+    await AsyncStorage.setItem('@GoTwitter:username', username)
+
+    this.navigateToTimeline()
+  }
+
   navigateToTimeline = () => {
     const resetAction = StackActions.reset({
       index: 0,
@@ -24,16 +34,6 @@ export default class Login extends Component {
     })
 
     this.props.navigation.dispatch(resetAction)
-  }
-
-  handleLogin = async () => {
-    const { username } = this.state
-
-    if(!username.length) return
-
-    await AsyncStorage.setItem('@GoTwitter:username', username)
-
-    this.navigateToTimeline()
   }
 
   handleInputChange = username => {
@@ -51,7 +51,9 @@ export default class Login extends Component {
             style={styles.input}
             placeholder="Nome de usuário"
             value={this.state.username}
-            onChangeText={this.handleInputChange} />
+            onChangeText={this.handleInputChange}
+            returnKeyType="send"
+            onSubmitEditing={this.handleLogin} />
           <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
             <Text style={styles.buttonText}>Entrar</Text>
           </TouchableOpacity>
