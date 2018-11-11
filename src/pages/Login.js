@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingVi
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { StackActions, NavigationActions } from 'react-navigation';
+
 export default class Login extends Component {
   static navigationOptions = {
     header: null,
@@ -13,6 +15,17 @@ export default class Login extends Component {
     username: ''
   }
 
+  navigateToTimeline = () => {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Timeline'})
+      ]
+    })
+
+    this.props.navigation.dispatch(resetAction)
+  }
+
   handleLogin = async () => {
     const { username } = this.state
 
@@ -20,7 +33,7 @@ export default class Login extends Component {
 
     await AsyncStorage.setItem('@GoTwitter:username', username)
 
-    this.props.navigation.navigate('Timeline')
+    this.navigateToTimeline()
   }
 
   handleInputChange = username => {
